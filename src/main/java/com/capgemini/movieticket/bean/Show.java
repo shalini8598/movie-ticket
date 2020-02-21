@@ -14,6 +14,6 @@ public class Show {
 
 	@Override
 	public String toString() {
-		return movieGenre ;
+		return movieGenre;
 	}
 }

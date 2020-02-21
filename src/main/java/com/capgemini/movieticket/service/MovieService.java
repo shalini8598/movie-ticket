@@ -96,10 +96,10 @@ public class MovieService implements IMovieService {
 		return Idcheck;
 	}
 
-	public static boolean movieValidation(Movie obj,String language,String genre) {
+	public static boolean movieValidation(Movie object,String language,String genre) {
 		boolean flag = false;
-		if (isValidMovieId(obj.getMovieId()) && isValidMovieName(obj.getMovieName())
-				&& isValidMovieDirector(obj.getMovieDirector()) && isValidMovieGenre(genre) && isValidMovieLanguage(language)) {
+		if (isValidMovieId(object.getMovieId()) && isValidMovieName(object.getMovieName())
+				&& isValidMovieDirector(object.getMovieDirector()) && isValidMovieGenre(genre) && isValidMovieLanguage(language)) {
 			flag = true;
 		}
 		return flag;
