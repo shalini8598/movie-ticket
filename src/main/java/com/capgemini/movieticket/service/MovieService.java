@@ -16,9 +16,11 @@ public class MovieService implements IMovieService {
 	public Boolean deleteMovie(int movieId) {
 		return daoObject.deleteMovie(movieId);
 	}
+
 	public void viewMovies() {
 		daoObject.viewMovies();
 	}
+	// validations
 
 	public static boolean isValidMovieId(int movieId) {
 		String id = movieId + "";
@@ -58,8 +60,9 @@ public class MovieService implements IMovieService {
 		}
 
 		return validMovieDirector;
- 
+
 	}
+
 	public static boolean isValidMovieGenre(String movieGenre) {
 		boolean validMovieGenre = false;
 		validMovieGenre = movieGenre.matches("[A-Z][a-z]+");
@@ -73,37 +76,37 @@ public class MovieService implements IMovieService {
 
 		return validMovieGenre;
 	}
- 
-		public static boolean isValidMovieLanguage(String movielanguage) {
-			boolean validMovieLanguage = false;
-			validMovieLanguage = movielanguage.matches("[A-Z][a-z]+");
-			if (validMovieLanguage == false) {
-				try {
-					throw new InValidNameException("InValid MovieLanguage");
-				} catch (InValidNameException e) {
 
-				}
+	public static boolean isValidMovieLanguage(String movielanguage) {
+		boolean validMovieLanguage = false;
+		validMovieLanguage = movielanguage.matches("[A-Z][a-z]+");
+		if (validMovieLanguage == false) {
+			try {
+				throw new InValidNameException("InValid MovieLanguage");
+			} catch (InValidNameException e) {
+
 			}
-
-			return validMovieLanguage;
-	 
 		}
-	public static boolean existIdCheck(MovieDAO daoobject,int movieId)
-	{
+
+		return validMovieLanguage;
+
+	}
+
+	public static boolean existIdCheck(MovieDAO daoobject, int movieId) {
 		boolean Idcheck = false;
 
 		daoobject.getListOfMovies().containsKey(movieId);
 		return Idcheck;
 	}
 
-	public static boolean movieValidation(Movie object,String language,String genre) {
+	public static boolean movieValidation(Movie object, String language, String genre) {
 		boolean flag = false;
 		if (isValidMovieId(object.getMovieId()) && isValidMovieName(object.getMovieName())
-				&& isValidMovieDirector(object.getMovieDirector()) && isValidMovieGenre(genre) && isValidMovieLanguage(language)) {
+				&& isValidMovieDirector(object.getMovieDirector()) && isValidMovieGenre(genre)
+				&& isValidMovieLanguage(language)) {
 			flag = true;
 		}
 		return flag;
 	}
 
 }
-

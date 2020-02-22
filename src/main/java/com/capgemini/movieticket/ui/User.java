@@ -26,6 +26,7 @@ public class User {
 			switch (choice) {
 
 			case 1:
+				// Adding movie
 				Movie beanobject = new Movie();
 				Show showobject = new Show();
 				MovieDAO daoObject = new MovieDAO();
@@ -73,6 +74,7 @@ public class User {
 				break;
 
 			case 2:
+				// Deleting movie
 				System.out.println("Enter the MovieId");
 				int movieId1 = scan.nextInt();
 				boolean flag = serviceobject.deleteMovie(movieId1);
@@ -83,6 +85,7 @@ public class User {
 				}
 				break;
 			case 3:
+				// To view the added list of movies
 
 				System.out.println("Available Movies");
 				serviceobject.viewMovies();
