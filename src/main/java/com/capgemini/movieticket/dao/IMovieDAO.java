@@ -1,5 +1,7 @@
 package com.capgemini.movieticket.dao;
 
+import java.util.Map;
+
 import com.capgemini.movieticket.bean.Movie;
 
 public interface IMovieDAO {
@@ -7,6 +9,6 @@ public interface IMovieDAO {
 
 	boolean deleteMovie(int movieId);
 
-	void viewMovies();
+	Map<Integer, Movie> viewMovies();
 
 }

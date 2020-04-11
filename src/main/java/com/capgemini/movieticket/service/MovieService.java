@@ -1,109 +1,99 @@
 package com.capgemini.movieticket.service;
 
+import java.util.Map;
+
 import com.capgemini.movieticket.bean.Movie;
+import com.capgemini.movieticket.dao.IMovieDAO;
 import com.capgemini.movieticket.dao.MovieDAO;
 import com.capgemini.movieticket.exception.InValidIdException;
+import com.capgemini.movieticket.exception.InValidMovieDirector;
+import com.capgemini.movieticket.exception.InValidMovieGenre;
+import com.capgemini.movieticket.exception.InValidMovieLanguage;
 import com.capgemini.movieticket.exception.InValidNameException;
 
 public class MovieService implements IMovieService {
 
-	MovieDAO daoObject = new MovieDAO();
+	IMovieDAO MovieDAOobject = new MovieDAO();
 
-	public Movie addMovie(Movie object) {
-		return daoObject.addMovie(object);
+	public Movie addMovie(Movie movieObject) {
+		return MovieDAOobject.addMovie(movieObject);
 	}
 
-	public Boolean deleteMovie(int movieId) {
-		return daoObject.deleteMovie(movieId);
+	public boolean deleteMovie(int movieId) {
+		return MovieDAOobject.deleteMovie(movieId);
 	}
 
-	public void viewMovies() {
-		daoObject.viewMovies();
+	public Map<Integer, Movie> viewMovies() {
+		return MovieDAOobject.viewMovies();
 	}
 	// validations
 
 	public static boolean isValidMovieId(int movieId) {
+		boolean flag = false;
 		String id = movieId + "";
-		boolean validMovieId = id.matches("[3][0-9]{3}");
-		if (validMovieId == false) {
-			try {
-				throw new InValidIdException("Invalid MovieId");
-			} catch (InValidIdException e) {
-			}
+		flag = id.matches("[3][0-9]{3}");
+		if (flag == false) {
+			throw new InValidIdException();
 		}
-		return validMovieId;
 
+		return flag;
 	}
 
 	public static boolean isValidMovieName(String movieName) {
-		boolean validMovieName = false;
-		validMovieName = movieName.matches("[A-Z][a-z]+");
-		if (validMovieName == false) {
-			try {
-				throw new InValidNameException("InValid MovieName");
-			} catch (InValidNameException e) {
-			}
-		}
-		return validMovieName;
+		boolean flag = false;
+		flag = movieName.matches("[A-Z][a-z]+");
 
+		if (flag == false) {
+
+			throw new InValidNameException();
+
+		}
+		return flag;
 	}
 
 	public static boolean isValidMovieDirector(String movieDirector) {
-		boolean validMovieDirector = false;
-		validMovieDirector = movieDirector.matches("[A-Z][a-z]+");
-		if (validMovieDirector == false) {
-			try {
-				throw new InValidNameException("InValid MovieDirector");
-			} catch (InValidNameException e) {
+		boolean flag = false;
+		flag = movieDirector.matches("[A-Z][a-z]+");
+		if (flag == false) {
+			throw new InValidMovieDirector();
 
-			}
 		}
-
-		return validMovieDirector;
-
+		return flag;
 	}
 
 	public static boolean isValidMovieGenre(String movieGenre) {
-		boolean validMovieGenre = false;
-		validMovieGenre = movieGenre.matches("[A-Z][a-z]+");
-		if (validMovieGenre == false) {
-			try {
-				throw new InValidNameException("InValid MovieGenre");
-			} catch (InValidNameException e) {
+		boolean flag = false;
+		flag = movieGenre.matches("[A-Z][a-z]+");
+		if (flag == false) {
+			throw new InValidMovieGenre();
 
-			}
 		}
-
-		return validMovieGenre;
+		return flag;
 	}
 
-	public static boolean isValidMovieLanguage(String movielanguage) {
-		boolean validMovieLanguage = false;
-		validMovieLanguage = movielanguage.matches("[A-Z][a-z]+");
-		if (validMovieLanguage == false) {
-			try {
-				throw new InValidNameException("InValid MovieLanguage");
-			} catch (InValidNameException e) {
+	public static boolean isValidMovieLanguage(String movieLanguage) {
+		boolean flag = false;
+		flag = movieLanguage.matches("[A-Z][a-z]+");
+		if (flag == false) {
+			throw new InValidMovieLanguage();
 
-			}
 		}
+		return flag;
+	}
 
-		return validMovieLanguage;
+	public static boolean existIdCheck(Movie movieObject) {
+		boolean flag = false;
+
+		flag = MovieDAO.listOfMovies.containsKey(movieObject.getMovieId());
+
+		return flag;
 
 	}
 
-	public static boolean existIdCheck(MovieDAO daoobject, int movieId) {
-		boolean Idcheck = false;
-
-		daoobject.getListOfMovies().containsKey(movieId);
-		return Idcheck;
-	}
-
-	public static boolean movieValidation(Movie object, String language, String genre) {
+	public static boolean userValidation(Movie object) {
 		boolean flag = false;
 		if (isValidMovieId(object.getMovieId()) && isValidMovieName(object.getMovieName())
-				&& isValidMovieDirector(object.getMovieDirector()) && isValidMovieGenre(genre)
-				&& isValidMovieLanguage(language)) {
+				&& isValidMovieDirector(object.getMovieDirector())) {
 			flag = true;
 		}
 		return flag;

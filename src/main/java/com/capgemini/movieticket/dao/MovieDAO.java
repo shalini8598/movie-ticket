@@ -13,20 +13,16 @@ import com.capgemini.movieticket.bean.Show;
 
 public class MovieDAO implements IMovieDAO {
 
-	Map<Integer, Movie> listOfMovies = new HashMap<Integer, Movie>();
+	
 	Movie movieObject = new Movie();
 
-	public Map<Integer, Movie> getListOfMovies() {
-		return listOfMovies;
-	}
+	public static Map<Integer, Movie> listOfMovies = new HashMap<Integer,Movie>();
 
 	public Movie addMovie(Movie object) {
-		Movie ticket = null;
 
-		listOfMovies.put(object.getMovieId(), object);
+		Movie flag = listOfMovies.put(object.getMovieId(), object);
 
-		ticket = object;
-		return ticket;
+		return object;
 	}
 
 	public boolean deleteMovie(int movieId) {
@@ -38,14 +34,13 @@ public class MovieDAO implements IMovieDAO {
 		return flag;
 	}
 
-	public void viewMovies() {
-		Collection<Movie> collection = listOfMovies.values();
-		List<Movie> list = new ArrayList<Movie>(collection);
-
-		for (Movie movie : list) {
-			System.out.println(movie + " ");
+	public Map<Integer,Movie> viewMovies() {
+		return listOfMovies;
 		}
+	public static void setListOfMovies(Map<Integer,Movie> listOfMovies) {
+		MovieDAO.listOfMovies = listOfMovies ;
+	}
 
 	}
 
-}
+

@@ -2,19 +2,34 @@ package com.capgemini.movieticket.ui;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.capgemini.movieticket.bean.Movie;
 import com.capgemini.movieticket.bean.Show;
 import com.capgemini.movieticket.dao.MovieDAO;
+import com.capgemini.movieticket.exception.InValidIdException;
+import com.capgemini.movieticket.exception.InValidMovieDirector;
+import com.capgemini.movieticket.exception.InValidMovieGenre;
+import com.capgemini.movieticket.exception.InValidMovieLanguage;
+import com.capgemini.movieticket.exception.InValidNameException;
 import com.capgemini.movieticket.service.MovieService;
 
 public class User {
 	public static void main(String[] args) {
-		MovieService serviceobject = new MovieService();
-
-		Scanner scan = new Scanner(System.in);
+		
 		while (true) {
+			try {
+				MovieService serviceObject = new MovieService();
+                Scanner scan = new Scanner(System.in);
+                Random random = new Random();
+			
 
 			System.out.println("carryon with the process");
 			System.out.println("1.Add Movie");
@@ -27,73 +42,158 @@ public class User {
 
 			case 1:
 				// Adding movie
-				Movie beanobject = new Movie();
-				Show showobject = new Show();
-				MovieDAO daoObject = new MovieDAO();
+				Movie movieObject = new Movie();
+				Show showObject = new Show();
+				
+				
+				 int movieId;
+				 String movieName;
+				 String movieDirector;
+				 int movieLength;
+				 LocalDate movieReleaseDate;
+				 List<Show> movieGenre = new ArrayList<Show>();
+				 List<String> languages = new ArrayList<String>();
+				
+				try {
 
 				System.out.println("Add Movie");
-				System.out.println("Enter the Movie Id");
-				int movieId = scan.nextInt();
 				System.out.println("Enter Movie Name");
-				String movieName = scan.next();
+			    movieName = scan.next();
+			    MovieService.isValidMovieName(movieName);
+			    movieId = random.nextInt(3000) + 3999;
+			    MovieService.isValidMovieId(movieId);
 				System.out.println("Enter Movie Director");
-				String movieDirector = scan.next();
+			    movieDirector = scan.next();
 				System.out.println("Enter the Duration of the Movie in minutes");
-				int movieLength = scan.nextInt();
+				int MovieLength = scan.nextInt();
 				System.out.println("Enter Movie Release Date");
 				DateTimeFormatter formatdate = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 				String text = scan.next();
-				LocalDate movieReleaseDate = LocalDate.parse(text, formatdate);
+				LocalDate MovieReleaseDate = LocalDate.parse(text, formatdate);
 				System.out.println("Enter the Genre of the Movie");
-				String movieGenre = scan.next();
+				String MovieGenre = scan.next();
 				System.out.println("Enter the Language");
-				String languages = scan.next();
-				beanobject.setMovieId(movieId);
-				beanobject.setMovieName(movieName);
-				beanobject.setMovieDirector(movieDirector);
-				beanobject.setMovieLength(movieLength);
-				beanobject.setMovieReleaseDate(movieReleaseDate);
-				showobject.setMovieGenre(movieGenre);
-				beanobject.languages.add(languages);
-				beanobject.movieGenre.add(showobject);
+				String Languages = scan.next();
+				movieObject.setMovieId(movieId);
+				movieObject.setMovieName(movieName);
+				movieObject.setMovieDirector(movieDirector);
+				movieObject.setMovieLength(MovieLength);
+				movieObject.setMovieReleaseDate(MovieReleaseDate);
+				//showObject.setMovieGenre(movieGenre);
+				//movieObject.languages.add(languages);
+				//movieObject.movieGenre.add(showObject);
 
-				boolean existId = MovieService.existIdCheck(daoObject, movieId);
-
+				boolean existId = MovieService.existIdCheck(movieObject);
 				if (existId == true) {
-					System.out.println("Movie with Id " + beanobject.getMovieId() + "Already exist ");
-				}
-				boolean valid = MovieService.movieValidation(beanobject, languages, movieGenre);
-				if (valid) {
-					Movie add = serviceobject.addMovie(beanobject);
 
-					System.out.println("Movie with Id " + add.getMovieId() + add + " added successfuly");
-				} else {
-					System.out.println("can not add Movie");
+					System.out.println("Movie with Id " + movieObject.getMovieId() + "already exist");
 				}
+				else {
+
+					
+					boolean valid = MovieService.userValidation(movieObject);
+					if (valid) {
+
+
+						Movie add = serviceObject.addMovie(movieObject);
+						
+						System.out.println("Movie added");
+					} 
+					else 
+					{
+						System.out.println(" Could Not Add Theater");
+					}
+				}
+				}
+				catch (InValidIdException exception)
+				{ 
+					System.err.println("Enter a Valid ID");
+				}
+				catch (InValidNameException exception) {
+				System.err.println("Enter a Valid Theater Name");
+				}		
+				catch(InValidMovieDirector exception)
+				{
+					System.err.println("Enter a Valid Movie Director");
+				}
+				catch(InValidMovieGenre exception)
+				{
+					System.err.println("Enter a Valid Movie Genre");
+				}
+				catch(InValidMovieLanguage exception)
+				{
+					System.err.println("Enter a Valid Movie Language");
+				}
+				
 
 				break;
 
 			case 2:
-				// Deleting movie
-				System.out.println("Enter the MovieId");
+{
+				
+				try
+				{
+				System.out.println("Enter The MovieId");
 				int movieId1 = scan.nextInt();
-				boolean flag = serviceobject.deleteMovie(movieId1);
-				if (flag == true) {
-					System.out.println("Movie with Id " + movieId1 + " Deleted Successfully");
-				} else {
-					System.out.println("Movie not Deleted");
+				boolean validId = MovieService.isValidMovieId(movieId1);
+				if (validId) {
+					boolean flag = serviceObject.deleteMovie(movieId1);
+					if (flag == true) {
+						System.out.println("Movie With Id " + movieId1 + " Deleted Successfully");
+
+					} 
+					else 
+					{
+						System.out.println("Cannot Delete Movie - MOVIE Is Not Present With Given Id");
+					}
+				} 
+				else 
+				{
+					System.out.println("Please Enter a Valid Movie Id");
+				}
+			}
+			
+			catch (InValidIdException ex)
+				{
+				System.err.println("Enter a Valid Movie ID");
+				}
+break;
+			}
+			case 3:
+				if(MovieDAO.listOfMovies.isEmpty())
+				{
+					System.out.println("Zero Movies Available");
+				}
+				else
+				{
+				System.out.println("Available Movies");
+				System.out.println();
+				Map<Integer,Movie> listOfMovies=serviceObject.viewMovies();
+				Set<Integer> set = listOfMovies.keySet();
+				Iterator it = set.iterator();
+				while (it.hasNext()) {
+					Integer key = (Integer) it.next();
+					System.out.println("MovieId - " + key + " "+ listOfMovies.get(key));
+					
+				}
 				}
 				break;
-			case 3:
-				// To view the added list of movies
-
-				System.out.println("Available Movies");
-				serviceobject.viewMovies();
-				break;
+			case 4:
+				System.out.println("You Are Out Of Admin Console");
+				System.out.println("Login Again To Add Movies");
+				System.exit(0);
 			default:
-				System.out.println("Invalid choice");
+				System.out.println("Please Choose a Valid Choice");
 				break;
 			}
+
+		//}
 		}
+		catch(InputMismatchException e)
+		{
+			System.err.println("Please Enter a Valid Input");
+		}
+			
 	}
+}
 }
