@@ -90,7 +90,7 @@ public class MovieService implements IMovieService {
 
 	}
 
-	public static boolean userValidation(Movie object) {
+	public static boolean userValidation(Movie object,String movieGenre,String languages) {
 		boolean flag = false;
 		if (isValidMovieId(object.getMovieId()) && isValidMovieName(object.getMovieName())
 				&& isValidMovieDirector(object.getMovieDirector())) {

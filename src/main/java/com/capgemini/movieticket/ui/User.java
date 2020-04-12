@@ -41,7 +41,7 @@ public class User {
 			switch (choice) {
 
 			case 1:
-				// Adding movie
+				
 				Movie movieObject = new Movie();
 				Show showObject = new Show();
 				
@@ -57,13 +57,15 @@ public class User {
 				try {
 
 				System.out.println("Add Movie");
+				movieId = random.nextInt(1000) + 3000;
+			    MovieService.isValidMovieId(movieId);
 				System.out.println("Enter Movie Name");
 			    movieName = scan.next();
 			    MovieService.isValidMovieName(movieName);
-			    movieId = random.nextInt(3000) + 3999;
-			    MovieService.isValidMovieId(movieId);
+			    
 				System.out.println("Enter Movie Director");
 			    movieDirector = scan.next();
+			    MovieService.isValidMovieDirector(movieDirector);
 				System.out.println("Enter the Duration of the Movie in minutes");
 				int MovieLength = scan.nextInt();
 				System.out.println("Enter Movie Release Date");
@@ -72,8 +74,10 @@ public class User {
 				LocalDate MovieReleaseDate = LocalDate.parse(text, formatdate);
 				System.out.println("Enter the Genre of the Movie");
 				String MovieGenre = scan.next();
+				MovieService.isValidMovieGenre(movieGenre);
 				System.out.println("Enter the Language");
 				String Languages = scan.next();
+				MovieService.isValidMovieLanguage(languages);
 				movieObject.setMovieId(movieId);
 				movieObject.setMovieName(movieName);
 				movieObject.setMovieDirector(movieDirector);
@@ -91,7 +95,7 @@ public class User {
 				else {
 
 					
-					boolean valid = MovieService.userValidation(movieObject);
+					boolean valid = MovieService.userValidation(movieObject,showObject);
 					if (valid) {
 
 
@@ -101,16 +105,16 @@ public class User {
 					} 
 					else 
 					{
-						System.out.println(" Could Not Add Theater");
+						System.out.println(" Could Not Add Movie");
 					}
 				}
 				}
 				catch (InValidIdException exception)
 				{ 
-					System.err.println("Enter a Valid ID");
+					System.err.println("Enter a Valid Movie ID");
 				}
 				catch (InValidNameException exception) {
-				System.err.println("Enter a Valid Theater Name");
+				System.err.println("Enter a Valid Movie Name");
 				}		
 				catch(InValidMovieDirector exception)
 				{
