@@ -53,6 +53,8 @@ public class User {
 				 LocalDate movieReleaseDate;
 				 List<Show> movieGenre = new ArrayList<Show>();
 				 List<String> languages = new ArrayList<String>();
+				 String Genre = null;
+				 String language = null;
 				
 				try {
 
@@ -73,19 +75,19 @@ public class User {
 				String text = scan.next();
 				LocalDate MovieReleaseDate = LocalDate.parse(text, formatdate);
 				System.out.println("Enter the Genre of the Movie");
-				String MovieGenre = scan.next();
-				MovieService.isValidMovieGenre(movieGenre);
+				 Genre = scan.next();
+				MovieService.isValidMovieGenre(Genre);
 				System.out.println("Enter the Language");
-				String Languages = scan.next();
-				MovieService.isValidMovieLanguage(languages);
+			    language = scan.next();
+				MovieService.isValidMovieLanguage(language);
 				movieObject.setMovieId(movieId);
 				movieObject.setMovieName(movieName);
 				movieObject.setMovieDirector(movieDirector);
 				movieObject.setMovieLength(MovieLength);
 				movieObject.setMovieReleaseDate(MovieReleaseDate);
-				//showObject.setMovieGenre(movieGenre);
-				//movieObject.languages.add(languages);
-				//movieObject.movieGenre.add(showObject);
+				showObject.setMovieGenre(Genre);
+				movieObject.languages.add(language);
+				movieObject.movieGenre.add(showObject);
 
 				boolean existId = MovieService.existIdCheck(movieObject);
 				if (existId == true) {
@@ -95,7 +97,7 @@ public class User {
 				else {
 
 					
-					boolean valid = MovieService.userValidation(movieObject,showObject);
+					boolean valid = MovieService.userValidation(movieObject);
 					if (valid) {
 
 
